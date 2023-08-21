@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/tobil/Desktop/Divad/Projects/Android/Fidgy/app/src/main/res/drawable/ic_launcher_background.xml" value="0.122" />
+        <entry key="..\:/Users/tobil/Desktop/Divad/Projects/Android/Fidgy/app/src/main/res/mipmap-anydpi-v26/ic_hands.xml" value="0.1115" />
+        <entry key="..\:/Users/tobil/Desktop/Divad/Projects/Android/Fidgy/app/src/main/res/mipmap-anydpi-v26/ic_hands_round.xml" value="0.1115" />
+      </map>
+    </option>
+  </component>
+  <component name="EntryPointsManager">
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="androidx.compose.runtime.Composable" />
+    </list>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
