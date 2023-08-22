@@ -8,33 +8,39 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.material.MaterialTheme.colors
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.ThumbUp
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.material.IconButton
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.divad.fidgy.ui.theme.*
+import com.divad.fidgy.ui.theme.Blue
+import com.divad.fidgy.ui.theme.Green500
+import com.divad.fidgy.ui.theme.Yellow
+import com.google.accompanist.systemuicontroller.SystemUiController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(controller: NavController) {
+    val systemUiController: SystemUiController = rememberSystemUiController()
+    DisposableEffect(key1 = true) {
+        systemUiController.isNavigationBarVisible = false
+        onDispose {
+            systemUiController.isNavigationBarVisible = true
+        }
+    }
+
+
+
     val scale = remember {
         Animatable(0f)
     }
@@ -103,14 +109,16 @@ fun MainScreen(controller: NavController) {
                 modifier = Modifier
                     .fillMaxSize(.80f)
             )
-            
+
 //            Spacer(modifier = Modifier.height(30.dp))
 
             Btn(
                 onClick = {
                     controller.navigate(Routes.ModeScreen.route)
                 },
-                modifier = Modifier,
+                modifier = Modifier
+                    .offset(y = (-150).dp)
+                    .fillMaxWidth(.25f),
                 bgColor = Blue,
                 text = "Play"
             )
@@ -120,6 +128,10 @@ fun MainScreen(controller: NavController) {
 
 @Composable
 fun ModeScreen(controller: NavController) {
+    var difficultyLevel by remember {
+        mutableStateOf("")
+    }
+    
     Box(
         modifier = Modifier
             .fillMaxSize(),
@@ -133,7 +145,8 @@ fun ModeScreen(controller: NavController) {
         Column {
             Btn(
                 onClick = {
-                    controller.navigate(Routes.ModeScreen.route)
+                    difficultyLevel = "Easy"
+                    controller.navigate(Routes.HandScreen.withArgs(difficultyLevel))
                 },
                 modifier = Modifier,
                 bgColor = Green500,
@@ -144,7 +157,8 @@ fun ModeScreen(controller: NavController) {
 
             Btn(
                 onClick = {
-                    controller.navigate(Routes.ModeScreen.route)
+                    difficultyLevel = "Medium"
+                    controller.navigate(Routes.HandScreen.withArgs(difficultyLevel))
                 },
                 modifier = Modifier,
                 bgColor = Blue,
@@ -155,7 +169,8 @@ fun ModeScreen(controller: NavController) {
 
             Btn(
                 onClick = {
-                    controller.navigate(Routes.ModeScreen.route)
+                    difficultyLevel = "Hard"
+                    controller.navigate(Routes.HandScreen.withArgs(difficultyLevel))
                 },
                 modifier = Modifier,
                 bgColor = Yellow,
@@ -163,8 +178,73 @@ fun ModeScreen(controller: NavController) {
             )
         }
 
-        Box(modifier = Modifier.align(Alignment.BottomStart).padding(start = 20.dp,  bottom = 20.dp)){
-            BackToHome(onClick = {controller.navigate(Routes.MainScreen.route)})
+        BackToHome(onClick = {controller.navigate(Routes.MainScreen.route)}, modifier = Modifier.align(Alignment.BottomStart))
+    }
+}
+
+@Composable
+fun Handscreen(controller: NavController, difficulty: String) {
+    var hand by remember {
+        mutableStateOf("")
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Navbar(
+            modifier = Modifier
+                .align(Alignment.TopStart)
+        )
+
+        Row (
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxHeight()
+        ) {
+            IconButton(onClick = {
+                hand = "lHand"
+                controller.navigate(Routes.GameScreen.withArgs(difficulty, hand))
+            }) {
+                Image(
+                    painter = painterResource(id = R.mipmap.ic_lhand_foreground),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxHeight(.9f)
+                        .width(600.dp)
+                )
+            }
+
+            IconButton(onClick = {
+                hand = "rHand"
+                controller.navigate(Routes.GameScreen.withArgs(difficulty, hand))
+            }) {
+                Image(
+                    painter = painterResource(id = R.mipmap.ic_rhand_foreground),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxHeight(.9f)
+                        .width(600.dp)
+                )
+            }
+        }
+
+        BackToHome(onClick = {controller.navigate(Routes.MainScreen.route)}, modifier = Modifier.align(Alignment.BottomStart))
+    }
+}
+
+@Composable
+fun GameScreen(controller: NavController, difficulty: String, hand: String) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        if (hand == "lHand") {
+            Text(text = "Left Hand chosen on $difficulty Difficulty.", fontSize = 60.sp)
+        } else {
+            Text(text = "Right Hand chosen on $difficulty Difficulty.", fontSize = 60.sp)
         }
     }
 }

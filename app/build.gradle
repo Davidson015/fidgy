@@ -60,6 +60,11 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 
+    // Custom Dependencies
+
     // Adding the navigation dependency
     implementation "androidx.navigation:navigation-compose:2.7.0"
+
+    // Adding the SystemUI dependency
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.31.2-alpha"
 }
